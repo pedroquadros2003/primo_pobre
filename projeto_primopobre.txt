@@ -1,7 +1,6 @@
 Classe inicializada, zerada, já no import primopobre
 
- -- PrimoPobreFacade
-
+ -- PrimoPobre
 
 -plan_dict
 
@@ -81,6 +80,8 @@ ___________________________________________
 
 -monthly_expenses
 
+- monthly_incomes
+
 -plan_duration
 
 -single_income_list
@@ -149,14 +150,17 @@ ___________________________________________
 
 +check_if_specified
 
--- PlanSolverX (implementation, pode ter mais de um)
+-- PlanSolver (implementation, pode ter mais de um)
 
 
-solver 
++solve(recebe a debt_list e a monthly_available_list e a solution_list. Passa para 
+implementation e recebe  um vetor de pagamentos realizados por mês (ou 0, caso não tenha resposta). Preenche a solução do plano.)
 
-(recebe a debt_list e a monthly_available_list. Retorna um vetor de pagamentos realizados por mês. Implementation faz o trabalho)
++get_solution   (aplica solve, depois descreve precisamente a solução )
 
 
+
+formatar saída
 
 -- PlanLoader
 
@@ -183,7 +187,8 @@ debts specs
 solution
 
 
--- DebtStats
+
+-- DebtStatsMaker
 
 debt_name
 
