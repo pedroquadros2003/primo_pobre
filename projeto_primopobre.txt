@@ -1,0 +1,223 @@
+Classe inicializada, zerada, já no import primopobre
+
+ -- PrimoPobreFacade
+
+
+-plan_dict
+
+-plan_solver
+
+-plan_loader
+
+-plan_saver
+
+-plan_stats_maker
+
+-debt_stats_maker
+
+---------------------
+
++create_plan(name)
+
++copy_plan (name1, name2)
+
++delete_plan(name)
+
++list_plans()
+
++plan_status ( name )
+
++save_plan_txt ( file_name ) 
+
+ --> file_name.txt seria o nome do arquivo. Salva o nome do plan. Modelo de salvamento será ainda descrito (IA)
+
++load_plan_txt ( file_name ) 
+
+--> erro se tiver mais de uma plan com o mesmo nome
+
+-->  Recebe filename e torna lista do que há de ser feito, processando a saída. Essa lista é processada posteriormente pelo builder
+
++solve_plan ( name )
+
+--> se já foi resolvido, sem nenhuma alteração desde antes, só retorna a resposta já guardada
+--> check_debts_validity antes, na própria classe
+
++save_solution_txt ( name )
+
+ --> sol2plan_name.txt
+
+
++set_plan_duration (plan, duration)
+
++set_monthly_expenses ( plan, value )
+
++set_monthly_incomes ( plan,  value )
+
++add_single_income ( plan, value, month)
+
++add_single_expense ( plan, value, month)
+
++add_debt( debt_name , plan)  
+
++delete_debt( debt_name, plan)
+
++set_debt_duration ( debt_name , beg , end)
+
++set_debt_value ( debt_name, value)
+
++set_debt_min_per_mth( debt_name, minimum_per_month )
+
++set_monthly_fee ( debt_name, monthly_fee)
+
++set_delay_fee ( debt_name, delay_payment_fee)
+
+
+
+___________________________________________
+
+-- Plan
+
+-plan_name
+
+-monthly_expenses
+
+-plan_duration
+
+-single_income_list
+
+-single_expense_list
+
+-monthly_available_list
+
+-debt_list
+
+-solution_list
+
+-is_solved (alterado se mudar o plan)
+
+-------------
+
++set_solution_list()
+
++get_is_solved()
+
++set_plan_duration (plan, duration)
+
++set_monthly_expenses ( plan, value )
+
++set_monthly_incomes ( plan,  value )
+
++add_single_income ( plan, value, month)
+
++add_single_expense ( plan, value, month)
+
++add_debt( debt_name , plan)  
+
++delete_debt( debt_name, plan)
+
+
+
+-- Debt
+
+-debt_name
+
+-debt_beg
+
+-debt_end
+
+-min_per_mth
+
+-monthly_fee
+
+-delay_fee
+
+-total_to_pay
+
+-is_specified (colocar exceptions aqui)
+
+-------------------
+
++set_debt_duration ( beg , end)
+
++set_debt_value ( value)
+
++set_debt_min_per_mth( minimum_per_month )
+
++set_monthly_fee (monthly_fee)
+
++set_delay_fee ( delay_payment_fee)
+
++check_if_specified
+
+-- PlanSolverX (implementation, pode ter mais de um)
+
+
+solver 
+
+(recebe a debt_list e a monthly_available_list. Retorna um vetor de pagamentos realizados por mês. Implementation faz o trabalho)
+
+
+
+-- PlanLoader
+
++load_plan_txt(filename)
+
+-- PlanSaver
+
++save_plan_txt(filename)
+
+
+-- PlanStatsMaker
+
+
+plan_name
+
+monthly_expenses
+
+single_incomes
+
+single_expenses
+
+debts specs
+
+solution
+
+
+-- DebtStats
+
+debt_name
+
+total_to_pay
+
+min_per_mth
+
+monthly_fee
+
+delay_fee
+
+is_specified (colocar problemas aqui)
+
+
+
+
+
+
+
+
+
+def my_function(parameter1, parameter2):
+    """
+    This function performs a specific task.
+
+    Args:
+        parameter1: Description of parameter1.
+        parameter2: Description of parameter2.
+
+    Returns:
+        Description of the return value (if any).
+    """
+    # Function body goes here
+    result = parameter1 + parameter2
+    return result
+
+help(my_function)
