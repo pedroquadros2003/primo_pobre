@@ -6,6 +6,6 @@ class PlanSaver:
     def __init__(self):
         pass
 
-    def load_plan_txt (self, file_name):
+    def save_plan_txt (self, file_name):
 
         pass

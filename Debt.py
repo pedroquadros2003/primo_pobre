@@ -7,7 +7,7 @@ class Debt:
     def __init__(self, debt_name=""):
 
         self.debt_name = debt_name
-        self.debt_beg = 0
+        self.debt_start = 0
         self.debt_end = 0
         self.min_per_mth = 0
         self.monthly_fee = 0

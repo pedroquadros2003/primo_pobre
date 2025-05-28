@@ -184,7 +184,8 @@ single_expenses
 
 debts specs
 
-solution
+solution_list
+(total pago por mês, porcentagem da dívida original paga, )
 
 
 

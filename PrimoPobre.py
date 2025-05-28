@@ -91,24 +91,14 @@ class PrimoPobre:
 
     def solve_plan(self, name):
         """
-        Solves a financial plan, calculating all debts and available funds.
+        Solves a financial plan, considering all debts and available funds.
 
         Args:
             name: Name of the plan to solve.
 
         Note:
-            If the plan was already solved with no changes, returns the stored solution.
+            If the plan was already solved with no changes, it does nothing.
             Checks debt validity before solving.
-        """
-        pass
-
-    def save_solution_txt(self, name):
-        """
-        Saves a plan's solution to a text file.
-
-        Args:
-            name: Name of the plan whose solution will be saved.
-                 The file will be saved as sol2[name].txt.
         """
         pass
 
@@ -163,9 +153,25 @@ class PrimoPobre:
             month: Target month (1-based index).
 
         Raises:
-            This function cannot deduct more money than what is available to spend in the corresponding month.
+            ValuError: This function cannot deduct more money than what is available to spend in the corresponding month.
         """
         pass
+
+    def debt_status(self, debt_name, plan):
+        """
+        Presents the status of a debt.
+
+        Args:
+            debt_name: Name of the debt.
+            plan: Name of the target plan.
+
+        Returns:
+            Total to pay, minimum per month, associatede fees and if it is completely specified.
+        """
+
+        pass
+    
+
 
     def add_debt(self, debt_name, plan):
         """
@@ -198,15 +204,6 @@ class PrimoPobre:
         """
         pass
 
-    def set_debt_value(self, debt_name, value):
-        """
-        Sets the total value of a debt.
-
-        Args:
-            debt_name: Name of the debt.
-            value: Total debt value.
-        """
-        pass
 
     def set_debt_min_per_mth(self, debt_name, minimum_per_month):
         """
@@ -224,7 +221,7 @@ class PrimoPobre:
 
         Args:
             debt_name: Name of the debt.
-            monthly_fee: Monthly fee percentage (e.g., 2.5 for 2.5%).
+            monthly_fee: Monthly fee percentage, between 0 and .
         """
         pass
 
@@ -234,6 +231,11 @@ class PrimoPobre:
 
         Args:
             debt_name: Name of the debt.
-            delay_payment_fee: Fee percentage for late payments.
+            delay_payment_fee: Monthly fee percentage for late payments, between 0 and 100.
         """
         pass
+
+
+
+
+pp = PrimoPobre()

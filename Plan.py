@@ -16,7 +16,7 @@ class Plan:
         self.single_income_list = []
         self.single_expense_list = []
         self.monthly_available_list = []
-        self.debt_list = []
+        self.debt_dict = []
         self.solution_list = []
         self.is_solved = False
 
