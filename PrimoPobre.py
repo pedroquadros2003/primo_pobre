@@ -5,7 +5,7 @@ class PrimoPobre:
     """
 
     def __init__(self):
-        self.__plan_dict = {"oss": 2}
+        self.__plan_dict = {}
         self.__plan_solver = 0
         self.__plan_loader = 0
         self.__plan_saver = 0
@@ -171,7 +171,18 @@ class PrimoPobre:
 
         pass
     
+    def copy_debt(self, source_name, target_name):
+        """
+        Copies an existing debt to a new one with other name.
 
+        Args:
+            source_name: Name of the original plan.
+            target_name: Name of the new copy.
+
+        Note:
+            If not specified, the target_name will be considered to be source_name+'_copy'.
+        """
+        pass
 
     def add_debt(self, debt_name, plan):
         """
