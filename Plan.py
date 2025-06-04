@@ -25,12 +25,9 @@ class Plan:
         self.__is_solved = False
         self.__is_duration_set = False
 
-    def copy(self, new_plan_name=""):
+    def copy(self, new_plan_name):
         
-        if new_plan_name == "":
-            aux = Plan(self.__plan_name+"_copy")
-        else:
-            aux = Plan(new_plan_name)
+        aux = Plan(new_plan_name)
         
         aux.set_plan_duration(self.__plan_duration)
         aux.set_monthly_incomes(self.__monthly_incomes)
@@ -46,12 +43,19 @@ class Plan:
             new_debt = self.__debt_dict[x].copy(self.__debt_dict[x].get_name())
             aux.add_debt(new_debt)
 
+        return aux
+
     def get_is_solved(self):
         return self.__is_solved
     
     def get_name(self):
         return self.__plan_name
-
+    
+    def get_debt (self, debt_name):
+        return self.__debt_dict[debt_name]
+    
+    def is_debt_in_the_plan (self, debt_name):
+        return debt_name in self.__debt_dict
 
     def set_solution_list(self, solution_list):
         """
@@ -167,7 +171,7 @@ class Plan:
             if not debt_name in self.__debt_dict:
                 self.__debt_dict[debt_name] = Debt(debt_name)
             else:
-                raise ImproperInput(f'There is already a debt called "{debt_name}".')
+                raise ImproperInput  (f"There is already a debt called '{debt_name}' in the plan '{ self.__plan_name }'." )
         else:
             raise ImproperInput("Input must be a string to be used as name for the debt.")
 
@@ -190,5 +194,3 @@ if __name__ == "__main__": ## debugging section
     p.add_single_expense(14, 3)
 
     p.add_single_expense(1, 2)
-
-    y =p.copy()

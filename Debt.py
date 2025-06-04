@@ -16,12 +16,9 @@ class Debt:
         self.__delay_fee = 0
         self.__total_to_pay = 0
 
-    def copy(self, new_debt_name=""):
+    def copy(self, new_debt_name):
         
-        if new_debt_name == "":
-            aux = Debt(self.__debt_name+"_copy")
-        else:
-            aux = Debt(new_debt_name)
+        aux = Debt(new_debt_name)
         
         aux.set_debt_duration(self.__debt_start, self.__debt_end)
         aux.set_debt_min_per_mth(self.__min_per_mth)
@@ -81,8 +78,8 @@ class Debt:
             bool: True if debt is fully specified, False otherwise
 
         """
-        if self.__total_to_pay > 0 and self.__monthly_fee>0:
 
+        if self.__total_to_pay > 0 and self.__monthly_fee>0:
             return True
         else:
             return False
@@ -91,7 +88,7 @@ class Debt:
 
 if __name__ == "__main__":
 
-    p = Debt("penis")
+    p = Debt("oss")
 
     p.set_debt_duration(14, 17)
 
