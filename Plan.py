@@ -44,6 +44,9 @@ class Plan:
             aux.add_debt(new_debt)
 
         return aux
+    
+    def get_is_duration_set(self):
+        return self.__is_duration_set
 
     def get_is_solved(self):
         return self.__is_solved
@@ -53,6 +56,12 @@ class Plan:
     
     def get_debt (self, debt_name):
         return self.__debt_dict[debt_name]
+    
+    def get_plan_duration(self):
+        return self.__plan_duration
+
+    def get_list_all_debts(self):
+        return list( self.__debt_dict.values() )
     
     def is_debt_in_the_plan (self, debt_name):
         return debt_name in self.__debt_dict
@@ -73,28 +82,27 @@ class Plan:
             if isinstance(duration, int) and duration>0:
                 self.__plan_duration = duration
                 self.__monthly_available_list = [0 for i in range(0, duration+1)]
-                print (len(self.__monthly_available_list))
                 self.__is_duration_set = True
                 
             else:
-                raise ImproperInput("Duration must be a positive integer.")
+                raise InvalidValue(" duration must be a positive integer.")
 
         else:
-            raise ImproperFunctionUse("Cannot redefine the duration of a plan.")
+            raise ImproperFunctionUse(" cannot redefine the duration of a plan.")
 
 
     def set_monthly_incomes(self, value):
 
         if self.__is_duration_set:
-            if isinstance(value, int) and value>0:
+            if isinstance(value, int) and value>=0:
                 self.__monthly_available_list = [self.__monthly_available_list[i] - self.__monthly_incomes for i in range(0, self.__plan_duration+1)]
                 self.__monthly_incomes = value
                 self.__monthly_available_list = [self.__monthly_available_list[i] + value for i in range(0, self.__plan_duration+1)]
             else:
-                raise ImproperInput("Monthly incomes must be a positive integer.")
+                raise InvalidValue(" monthly incomes must be a positive integer.")
             
         else:
-            raise ImproperFunctionUse("Cannot initialize monthly_incomes without setting a plan duration.")
+            raise ImproperFunctionUse(" cannot initialize monthly_incomes without setting a plan duration.")
 
        
 
@@ -102,20 +110,20 @@ class Plan:
 
         if self.__is_duration_set:
 
-            if isinstance(value, int) and value>0:
+            if isinstance(value, int) and value>=0:
 
                 if value < self.__monthly_incomes:
                     self.__monthly_available_list = [self.__monthly_available_list[i] + self.__monthly_expenses for i in range(0, self.__plan_duration+1)]
                     self.__monthly_expenses = value
                     self.__monthly_available_list = [self.__monthly_available_list[i] - value for i in range(1, self.__plan_duration+1)]
                 else: 
-                    raise ImproperInput("Monthly expenses value must be at least as large as the monthly incomes.")
+                    raise InvalidValue(" monthly expenses value must be at least as large as the monthly incomes.")
 
             else:
-                raise ImproperInput("Monthly expenses value must be a positive integer.")
+                raise InvalidValue(" monthly expenses value must be a positive integer.")
         
         else:
-            raise ImproperFunctionUse("Cannot initialize monthly_expenses without setting a plan duration.")
+            raise ImproperFunctionUse(" cannot initialize monthly_expenses without setting a plan duration.")
 
 
 
@@ -125,17 +133,17 @@ class Plan:
 
             if month < self.__plan_duration:
 
-                if isinstance(value, int) and value>0:
+                if isinstance(value, int) and value>=0:
                     self.__monthly_available_list[month] = self.__monthly_available_list[month] + value
                     self.__single_income_list = self.__single_income_list + [ (value, month) ]
                 else:
-                    raise ImproperInput("Income value must be a positive integer.")
+                    raise InvalidValue(" income value must be a positive integer.")
             
             else:
-                raise IndexError("This month is out of the duration specified.")
+                raise IndexError(" this month is out of the duration specified.")
 
         else:
-            raise ImproperFunctionUse("Cannot add single income without setting a plan duration.")
+            raise ImproperFunctionUse(" cannot add single income without setting a plan duration.")
 
         
 
@@ -145,41 +153,42 @@ class Plan:
             
             if month < self.__plan_duration:
 
-                if isinstance(value, int) and value>0:
+                if isinstance(value, int) and value>=0:
 
-                    if self.__monthly_available_list[month] > value:
+                    if self.__monthly_available_list[month] >= value:
                         self.__monthly_available_list[month] = self.__monthly_available_list[month] - value
                         self.__single_expense_list = self.__single_expense_list + [ (value, month) ]
 
                     else:
-                        raise ImproperInput("Expense value must be at least as large as the monthly available income.")
+                        raise InvalidValue(" expense value must be at least as large as the monthly available income.")
 
                 else:
-                    raise ImproperInput("Expense value must be a positive integer.")
+                    raise InvalidValue(" expense value must be a positive integer.")
                 
             else:
-                raise IndexError("This month is out of the duration specified.")
+                raise IndexError(" this month is out of the duration specified.")
 
         else:
-            raise ImproperFunctionUse("Cannot add single expense without setting a plan duration.")
+            raise ImproperFunctionUse(" cannot add single expense without setting a plan duration.")
 
 
     def add_debt(self, debt_name):
 
-        if isinstance(debt_name, str):
+        if self.__is_duration_set:
 
             if not debt_name in self.__debt_dict:
                 self.__debt_dict[debt_name] = Debt(debt_name)
             else:
-                raise ImproperInput  (f"There is already a debt called '{debt_name}' in the plan '{ self.__plan_name }'." )
+                raise NameError (f" there is already a debt called '{debt_name}' in the plan '{ self.__plan_name }'." )
+        
         else:
-            raise ImproperInput("Input must be a string to be used as name for the debt.")
+            raise ImproperFunctionUse(" you cannot add debts without specifying the duration of the plan.")
 
     def delete_debt(self, debt_name):
         if debt_name in self.__debt_dict:
             del self.__debt_dict[debt_name] 
         else:
-            raise ImproperInput(f'There is no debt called "{debt_name}".')
+            raise NonexistentObject (f' there is no debt called "{debt_name}".')
  
 
 if __name__ == "__main__": ## debugging section
@@ -194,3 +203,5 @@ if __name__ == "__main__": ## debugging section
     p.add_single_expense(14, 3)
 
     p.add_single_expense(1, 2)
+
+

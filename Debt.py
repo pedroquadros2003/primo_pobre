@@ -27,6 +27,9 @@ class Debt:
 
     def get_debt_name(self):
         return self.__debt_name
+    
+    def get_debt_end(self):
+        return self.__debt_end
 
     def set_debt_duration(self, start, end):
         ## Wheter the end is greater than the duration of the plan or not, this exception will be raised
@@ -39,7 +42,7 @@ class Debt:
             self.__total_to_pay = (end-start+1) * self.__min_per_mth
 
         else:
-            raise ImproperInput("start and end must positive integers, the latter greater than the former." )
+            raise InvalidValue(" start and end must positive integers, the latter greater than the former." )
 
 
     def set_debt_min_per_mth(self, minimum_per_month):
@@ -50,7 +53,7 @@ class Debt:
             self.__total_to_pay = (self.__debt_end - self.__debt_start +1) * minimum_per_month
 
         else:
-            raise ImproperInput("minimum per month must be a positive integer.")
+            raise InvalidValue(" minimum per month must be a positive integer.")
 
     def set_monthly_fee(self, monthly_fee):
        
@@ -59,7 +62,7 @@ class Debt:
             self.__monthly_fee = monthly_fee
 
         else:
-            raise ImproperInput("monthly fee must be a positive percentage between 0 and 100.")
+            raise InvalidValue(" monthly fee must be a positive percentage between 0 and 100.")
 
     def set_delay_fee(self, delay_payment_fee):
         
@@ -68,7 +71,7 @@ class Debt:
             self.__delay_fee = delay_payment_fee
 
         else:
-            raise ImproperInput("delay fee must be a positive percentage between 0 and 100.")
+            raise InvalidValue(" delay fee must be a positive percentage between 0 and 100.")
 
     def is_specified(self):
         """

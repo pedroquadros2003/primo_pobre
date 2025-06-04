@@ -5,3 +5,8 @@ Por padrão, o software internamente lida com centavos, mas recebe a entrada em 
 Vetores de mês começam no 1, por convenção
 
 Se a taxa de amortização não for definida, o problema não envolve amortização
+
+
+NameError, NotValidValue
+
+If the plan was already solved with no changes, it does nothing.
