@@ -1,3 +1,6 @@
+from Plan import Plan
+
+
 class PlanLoader:
     """
     Class that creates a plan from .txt file
