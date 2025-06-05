@@ -30,7 +30,27 @@ class Debt:
     
     def get_debt_end(self):
         return self.__debt_end
-
+    
+    def get_debt_start(self):
+        return self.__debt_start
+    
+    def get_min_per_mth(self):
+        return self.__min_per_mth
+    
+    def get_monthly_fee(self):
+        return self.__monthly_fee
+    
+    def get_delay_fee(self):
+        return self.__delay_fee
+    
+    def get_total_to_pay(self):
+        return self.__total_to_pay
+    
+    def get_is_specified(self):
+        return self.__is_specified
+    
+    
+    
     def set_debt_duration(self, start, end):
         ## Wheter the end is greater than the duration of the plan or not, this exception will be raised
         ## inside the solve function

@@ -63,6 +63,30 @@ class Plan:
     def get_list_all_debts(self):
         return list( self.__debt_dict.values() )
     
+    def get_monthly_incomes(self):
+        return self.__monthly_incomes
+    
+    def get_monthly_expenses(self):
+        return self.__monthly_expenses
+
+    def get_single_income_list(self):
+        return self.__single_income_list
+    
+    def get_single_expense_list(self):
+        return self.__single_expense_list
+    
+    def get_monthly_available_list(self):
+        return self.__monthly_available_list
+    
+    def get_solution_list(self):
+        return self.__solution_list
+    
+    def get_debt_dict(self):
+        return self.__debt_dict
+    
+    def get_plan_duration(self):
+        return self.__plan_duration
+    
     def is_debt_in_the_plan (self, debt_name):
         return debt_name in self.__debt_dict
 

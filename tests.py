@@ -106,6 +106,9 @@ def test_multiple_debts():
     pp.add_debt("multi_debt", "student_loan")
     pp.set_debt_min_per_mth("multi_debt", "mortgage", 1200)
     pp.set_debt_min_per_mth("multi_debt", "student_loan", 300)
+    pp.save_plan_txt("multi_debt.txt", "multi_debt")
+
+
 
 def test_invalid_expense():
     """Test expense exceeding available funds - SHOULD PASS (by catching exception)"""

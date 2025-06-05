@@ -1,6 +1,10 @@
 from Plan import Plan
 from Debt import Debt
 from Exceptions_primo_pobre import *
+from PlanSaver import PlanSaver
+from PlanLoader import PlanLoader
+from PlanSolver import PlanSolver
+from PlanStatsMaker import PlanStatsMaker
 
 class PrimoPobre:
     """
@@ -10,10 +14,10 @@ class PrimoPobre:
 
     def __init__(self):
         self.__plan_dict = {}
-        self.__plan_solver = 0
-        self.__plan_loader = 0
-        self.__plan_saver = 0
-        self.__plan_stats_maker = 0
+        self.__plan_solver = PlanSolver()
+        self.__plan_loader = PlanLoader()
+        self.__plan_saver = PlanSaver()
+        self.__plan_stats_maker = PlanStatsMaker()
         self.__debt_stats_maker = 0
 
     def create_plan(self, plan_name):
@@ -43,7 +47,6 @@ class PrimoPobre:
             NonexistentObject: It cannot copy a plan that does not exist.
             NameError: It does not allow the copy to have a name already in use.
         """
-        
         if not source_name in self.__plan_dict:
             raise NonexistentObject(" the plan you are trying to copy does not exist.")
         else:
@@ -51,7 +54,6 @@ class PrimoPobre:
                 raise NameError(f" there is already a plan with the name: '{target_name}'.")
             else:
                 self.__plan_dict[target_name] = self.__plan_dict[source_name].copy(target_name)
-
 
     def delete_plan(self, plan_name):
         """
@@ -68,18 +70,16 @@ class PrimoPobre:
         else:
             del self.__plan_dict[plan_name]
 
-    def list_plans(self): ## it needs improvement
+    def list_plans(self):
         """
         Lists all existing plans.
 
         Returns:
             List of all plan names.
         """
-
         print("Current plans are: ")
         for x in self.__plan_dict.values():
             print(f'   -> {x.get_name()}')
-            
 
     def plan_status(self, plan_name):
         """
@@ -94,20 +94,29 @@ class PrimoPobre:
         Raises:
             NonexistentObject: It cannot return the status of an unexisting plan.
         """
-        pass
+        if not plan_name in self.__plan_dict.keys():
+            raise NonexistentObject(" the plan you are trying to check does not exist.")
+        return self.__plan_dict[plan_name]
 
-    def save_plan_txt(self, file_name):
+    def save_plan_txt(self, file_name, plan_name):
         """
         Saves a plan to a text file.
 
         Args:
             file_name: Name of the file to save to (without extension).
                       The file will be saved as file_name.txt.
+            plan_name: Name of the plan to save.
         
         Raises:
             NonexistentObject: It cannot save an unexisting plan.
+            ValueError: If there's an error saving the file.
         """
-        pass
+        if not plan_name in self.__plan_dict.keys():
+            raise NonexistentObject(" the plan you are trying to save does not exist.")
+        try:
+            self.__plan_saver.save_plan_txt(file_name, self.__plan_dict[plan_name])
+        except Exception as e:
+            raise ValueError(f"Error saving plan: {str(e)}")
 
     def load_plan_txt(self, file_name):
         """
@@ -117,9 +126,19 @@ class PrimoPobre:
             file_name: Name of the file to load.
 
         Raises:
+            FileNotFoundError: If the specified file doesn't exist.
+            ValueError: If the file format is invalid.
             NameError: If a plan with the same name already exists.
         """
-        pass
+        try:
+            plan = self.__plan_loader.load_plan_txt(file_name)
+            if plan.get_name() in self.__plan_dict:
+                raise NameError(f" there is already a plan with the name: '{plan.get_name()}'.")
+            self.__plan_dict[plan.get_name()] = plan
+        except FileNotFoundError as e:
+            raise FileNotFoundError(str(e))
+        except Exception as e:
+            raise ValueError(f"Error loading plan: {str(e)}")
 
     def solve_plan(self, plan_name):
         """
@@ -129,32 +148,34 @@ class PrimoPobre:
             plan_name: Name of the plan to solve.
 
         Raises:
-            NotCompletelySpecified: There is not suffiecient information regarding the plan and its debts.
+            NonexistentObject: It cannot solve a plan that does not exist.
+            NotCompletelySpecified: There is not sufficient information regarding the plan and its debts.
             WronglySpecified: There are debts which are due to months ahead the duration of the plan.    
         
         Note:
             If the plan was already solved with no changes, it does nothing.
         """
-        pass
+        if not plan_name in self.__plan_dict.keys():
+            raise NonexistentObject(" the plan you are trying to solve does not exist.")
+        self.__plan_solver.solve(self.__plan_dict[plan_name])
 
     def set_plan_duration(self, plan_name, duration):
         """
         Sets the duration (in months) of a plan.
 
         Args:
-            plan: Name of the plan.
+            plan_name: Name of the plan.
             duration: Duration in months.
 
         Raises:
             NonexistentObject: It cannot set the duration of a plan that does not exist.
+            InvalidValue: Duration must be a positive integer.
+            ImproperFunctionUse: Cannot redefine the duration of a plan.
         """
-
         if not plan_name in self.__plan_dict.keys():
             raise NonexistentObject(" the plan you are trying to edit does not exist.")
-        else:
-            self.__plan_dict[plan_name].set_plan_duration(duration)
+        self.__plan_dict[plan_name].set_plan_duration(duration)
 
-        
     def set_monthly_expenses(self, plan_name, value):
         """
         Sets the fixed monthly expenses of a plan.
@@ -165,12 +186,12 @@ class PrimoPobre:
 
         Raises:
             NonexistentObject: It cannot set the monthly expenses of a plan that does not exist.
+            InvalidValue: Monthly expenses must be a positive integer and less than monthly incomes.
+            ImproperFunctionUse: Cannot set expenses without setting plan duration first.
         """
-
         if not plan_name in self.__plan_dict.keys():
             raise NonexistentObject(" the plan you are trying to edit does not exist.")
-        else:
-            self.__plan_dict[plan_name].set_monthly_expenses(value)
+        self.__plan_dict[plan_name].set_monthly_expenses(value)
 
     def set_monthly_incomes(self, plan_name, value):
         """
@@ -182,12 +203,12 @@ class PrimoPobre:
 
         Raises:
             NonexistentObject: It cannot set the monthly incomes of a plan that does not exist.
+            InvalidValue: Monthly incomes must be a positive integer.
+            ImproperFunctionUse: Cannot set incomes without setting plan duration first.
         """
-
         if not plan_name in self.__plan_dict.keys():
             raise NonexistentObject(" the plan you are trying to edit does not exist.")
-        else:
-            self.__plan_dict[plan_name].set_monthly_incomes(value)
+        self.__plan_dict[plan_name].set_monthly_incomes(value)
 
     def add_single_income(self, plan_name, value, month):
         """
@@ -200,47 +221,32 @@ class PrimoPobre:
 
         Raises:
             NonexistentObject: It cannot add a single income to a plan that does not exist.
+            InvalidValue: Income value must be a positive integer.
+            IndexError: Month is out of the plan duration.
+            ImproperFunctionUse: Cannot add income without setting plan duration first.
         """
-        
         if not plan_name in self.__plan_dict.keys():
             raise NonexistentObject(" the plan you are trying to edit does not exist.")
-        else:
-            self.__plan_dict[plan_name].add_single_income(value, month)
-        
+        self.__plan_dict[plan_name].add_single_income(value, month)
 
     def add_single_expense(self, plan_name, value, month):
         """
         Adds a one-time expense to a specific month.
 
         Args:
-            plan: Name of the plan.
+            plan_name: Name of the plan.
             value: Expense value.
             month: Target month (1-based index).
 
         Raises:
             NonexistentObject: It cannot add a single expense to a plan that does not exist.
-            InavalidValue: It cannot deduct more money than what is available to spend in the corresponding month.
+            InvalidValue: Expense value must be a positive integer and not exceed available funds.
+            IndexError: Month is out of the plan duration.
+            ImproperFunctionUse: Cannot add expense without setting plan duration first.
         """
-        
         if not plan_name in self.__plan_dict.keys():
             raise NonexistentObject(" the plan you are trying to edit does not exist.")
-        else:
-            self.__plan_dict[plan_name].add_single_expense(value, month)
-
-    def debt_status(self, plan_name, debt_name):
-        """
-        Presents the status of a debt.
-
-        Args:
-            plan_name: Name of the target plan.
-            debt_name: Name of the debt.
-
-        Returns:
-            Total to pay, minimum per month, associatede fees and if it is completely specified.
-        """
-
-        pass
-    
+        self.__plan_dict[plan_name].add_single_expense(value, month)
 
     def add_debt(self, plan_name, debt_name):
         """
@@ -253,13 +259,11 @@ class PrimoPobre:
         Raises:
             NonexistentObject: It cannot add a debt to a plan that does not exist.
             NameError: It cannot add a debt to a plan in which 'debt_name' is already in use.
+            ImproperFunctionUse: Cannot add debt without setting plan duration first.
         """
-
         if not plan_name in self.__plan_dict.keys():
             raise NonexistentObject(" the plan to which you are trying to add a debt does not exist.")
-        else:
-            self.__plan_dict[plan_name].add_debt(debt_name)
-
+        self.__plan_dict[plan_name].add_debt(debt_name)
 
     def delete_debt(self, plan_name, debt_name):
         """
@@ -270,14 +274,12 @@ class PrimoPobre:
             debt_name: Name of the debt to remove.
 
         Raises:
-            NonexistingObject: It cannot delete a debt from a plan that does not exist.
-            NonexistingObject: It cannot delete a debt which does not exist.
+            NonexistentObject: It cannot delete a debt from a plan that does not exist.
+            NonexistentObject: It cannot delete a debt which does not exist.
         """
-        
         if not plan_name in self.__plan_dict.keys():
             raise NonexistentObject(" the plan from which you are trying to delete a debt does not exist.")
-        else:
-            self.__plan_dict[plan_name].delete_debt(debt_name)
+        self.__plan_dict[plan_name].delete_debt(debt_name)
 
     def set_debt_duration(self, plan_name, debt_name, start, end):
         """
@@ -289,18 +291,16 @@ class PrimoPobre:
             start: First month of debt (1-based index).
             end: Last month of debt (1-based index).
 
-        NonexistingObject: It cannot edit a debt from a plan which does not exist.
-        NonexistingObject: It cannot edit a debt which does not exist.
+        Raises:
+            NonexistentObject: It cannot edit a debt from a plan which does not exist.
+            NonexistentObject: It cannot edit a debt which does not exist.
+            InvalidValue: Start and end must be positive integers, with end greater than start.
         """
         if not plan_name in self.__plan_dict.keys():
             raise NonexistentObject(" the plan from which you are trying to edit does not exist.")
-        else:
-            if not self.__plan_dict[plan_name].is_debt_in_the_plan(debt_name):
-                raise NonexistentObject(f' there is no debt called "{debt_name}".')
-            else: 
-                self.__plan_dict[plan_name].get_debt(debt_name).set_debt_duration(start, end)
-
-
+        if not self.__plan_dict[plan_name].is_debt_in_the_plan(debt_name):
+            raise NonexistentObject(f' there is no debt called "{debt_name}".')
+        self.__plan_dict[plan_name].get_debt(debt_name).set_debt_duration(start, end)
 
     def set_debt_min_per_mth(self, plan_name, debt_name, minimum_per_month):
         """
@@ -312,17 +312,15 @@ class PrimoPobre:
             minimum_per_month: Minimum payment per month.
         
         Raises:
-            NonexistingObject: It cannot edit a debt from a plan which does not exist.
-            NonexistingObject: It cannot edit a debt which does not exist.
+            NonexistentObject: It cannot edit a debt from a plan which does not exist.
+            NonexistentObject: It cannot edit a debt which does not exist.
+            InvalidValue: Minimum per month must be a positive integer.
         """
         if not plan_name in self.__plan_dict.keys():
             raise NonexistentObject(" the plan from which you are trying to edit does not exist.")
-        else:
-            if not self.__plan_dict[plan_name].is_debt_in_the_plan(debt_name):
-                raise NonexistentObject(f' there is no debt called "{debt_name}".')
-            else: 
-                self.__plan_dict[plan_name].get_debt(debt_name).set_debt_min_per_mth(minimum_per_month)
-
+        if not self.__plan_dict[plan_name].is_debt_in_the_plan(debt_name):
+            raise NonexistentObject(f' there is no debt called "{debt_name}".')
+        self.__plan_dict[plan_name].get_debt(debt_name).set_debt_min_per_mth(minimum_per_month)
 
     def set_monthly_fee(self, plan_name, debt_name, monthly_fee):
         """
@@ -331,20 +329,18 @@ class PrimoPobre:
         Args:
             plan_name: Name of the target plan.
             debt_name: Name of the debt.
-            monthly_fee: Monthly fee percentage, between 0 and .
+            monthly_fee: Monthly fee percentage, between 0 and 100.
         
         Raises:
-            NonexistingObject: It cannot edit a debt from a plan which does not exist.
-            NonexistingObject: It cannot edit a debt which does not exist.
+            NonexistentObject: It cannot edit a debt from a plan which does not exist.
+            NonexistentObject: It cannot edit a debt which does not exist.
+            InvalidValue: Monthly fee must be a positive percentage between 0 and 100.
         """
         if not plan_name in self.__plan_dict.keys():
             raise NonexistentObject(" the plan from which you are trying to edit does not exist.")
-        else:
-            if not self.__plan_dict[plan_name].is_debt_in_the_plan(debt_name):
-                raise NonexistentObject(f' there is no debt called "{debt_name}".')
-            else: 
-                self.__plan_dict[plan_name].get_debt(debt_name).set_monthly_fee(monthly_fee)
-
+        if not self.__plan_dict[plan_name].is_debt_in_the_plan(debt_name):
+            raise NonexistentObject(f' there is no debt called "{debt_name}".')
+        self.__plan_dict[plan_name].get_debt(debt_name).set_monthly_fee(monthly_fee)
 
     def set_delay_fee(self, plan_name, debt_name, delay_payment_fee):
         """
@@ -356,17 +352,15 @@ class PrimoPobre:
             delay_payment_fee: Monthly fee percentage for late payments, between 0 and 100.
                 
         Raises:
-            NonexistingObject: It cannot edit a debt from a plan which does not exist.
-            NonexistingObject: It cannot edit a debt which does not exist.
+            NonexistentObject: It cannot edit a debt from a plan which does not exist.
+            NonexistentObject: It cannot edit a debt which does not exist.
+            InvalidValue: Delay fee must be a positive percentage between 0 and 100.
         """
         if not plan_name in self.__plan_dict.keys():
             raise NonexistentObject(" the plan from which you are trying to edit does not exist.")
-        else:
-            if not self.__plan_dict[plan_name].is_debt_in_the_plan(debt_name):
-                raise NonexistentObject(f' there is no debt called "{debt_name}".')
-            else: 
-                self.__plan_dict[plan_name].get_debt(debt_name).set_monthly_fee(delay_payment_fee)
-
+        if not self.__plan_dict[plan_name].is_debt_in_the_plan(debt_name):
+            raise NonexistentObject(f' there is no debt called "{debt_name}".')
+        self.__plan_dict[plan_name].get_debt(debt_name).set_delay_fee(delay_payment_fee)
 
 if __name__ == "__main__":
 
