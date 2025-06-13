@@ -5,6 +5,7 @@ from PlanSaver import PlanSaver
 from PlanLoader import PlanLoader
 from PlanSolver import PlanSolver
 from PlanStatsMaker import PlanStatsMaker
+from DebtStatsMaker import DebtStatsMaker
 
 class PrimoPobre:
     """
@@ -18,7 +19,7 @@ class PrimoPobre:
         self.__plan_loader = PlanLoader()
         self.__plan_saver = PlanSaver()
         self.__plan_stats_maker = PlanStatsMaker()
-        self.__debt_stats_maker = 0
+        self.__debt_stats_maker = DebtStatsMaker()
 
     def create_plan(self, plan_name):
         """
