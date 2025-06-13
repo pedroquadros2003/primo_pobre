@@ -3,8 +3,6 @@ class PlanStatsMaker:
     def __init__(self):
         pass
 
-    def plan_status(self, plan):
-        pass
 
     def stats_plan(self, plan_data):
         """
