@@ -154,6 +154,13 @@ To start using PrimoPobre, you'll need to be in the project's main directory (pr
     ```
     
    This loads the plan saved in my_plan_backup.txt into PrimoPobre.
+   
+### Statistical Analysis for Debts
+ * Get Debt Statistics:
+```python
+debt_stats = pp.get_debt_stats("MyFinancialPlan", "CreditCardDebt")
+print(debt_stats) # This will print the detailed statistics of the debt
+```
 
 ### Error Handling
 
