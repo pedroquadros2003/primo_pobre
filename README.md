@@ -34,9 +34,17 @@ Instituto Tecnológico de Aeronáutica
 ## How to Use
 
 ### Initialization
+
+To start using PrimoPobre, you'll need to be in the project's main directory (primo_pobre/) and import the class.
+
+* Navigate to the project directory:
+  ```bash
+  cd primo_pobre/
+  ```
     
-  * First, create an instance of the PrimoPobre class:
-    ```python    
+* Import the PrimoPobre class and create an instance:
+    ```python
+    from PrimoPobre import PrimoPobre    
     pp = PrimoPobre()
     ```
 
