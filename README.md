@@ -28,6 +28,7 @@ Instituto Tecnológico de Aeronáutica
 * **Financial Problem Solver**: Utilize the built-in solver to analyze your financial plans, considering all incomes, expenses, and debts, to provide a structured solution.
 * **Plan Persistence**: Save your financial plans to text files and load them back into the application for continued management.
 * **Status Overview**: Get a complete overview of any plan, including its incomes, expenses, debts, and the calculated solution.
+* **Statistical Analysis for Debts**: Utilize `DebtStatsMaker` to calculate and view detailed statistics about your debts, including total amounts, average payments, fees, and durations.
 
 ---
 
@@ -153,6 +154,13 @@ To start using PrimoPobre, you'll need to be in the project's main directory (pr
     ```
     
    This loads the plan saved in my_plan_backup.txt into PrimoPobre.
+   
+### Statistical Analysis for Debts
+ * Get Debt Statistics:
+```python
+debt_stats = pp.get_debt_stats("MyFinancialPlan", "CreditCardDebt")
+print(debt_stats) # This will print the detailed statistics of the debt
+```
 
 ### Error Handling
 
