@@ -8,13 +8,21 @@ class Debt:
 
     def __init__(self, debt_name):
 
-        self.__debt_name = debt_name
-        self.__debt_start = 0
-        self.__debt_end = 0
-        self.__min_per_mth = 0
-        self.__monthly_fee = 0
-        self.__delay_fee = 0
-        self.__total_to_pay = 0
+        self.__debt_name = debt_name 
+
+        self.__debt_start = 0    ## first month in which the debt is going to be charged. At least 1
+
+        self.__debt_end = 0      ## last month in which the debt is going to be charged. If greater than plan_duration, raises exception
+                                 
+        self.__min_per_mth = 0   ## minimum ammount to be payed per month
+
+        self.__monthly_fee = 0   ## fees that are inherent to the debt, only to be considered in the case where it is != 0 (amortization)
+                                 ## Its value lies between 0 and 100
+
+        self.__delay_fee = 0     ## delay fee applied to delayed installments of a debt
+                                 ## Its value lies between 0 and 100
+
+        self.__total_to_pay = 0  ## minimum per month x (end - start + 1)
 
     def copy(self, new_debt_name):
         
@@ -49,11 +57,9 @@ class Debt:
     def get_is_specified(self):
         return self.__is_specified
     
-    
-    
     def set_debt_duration(self, start, end):
-        ## Wheter the end is greater than the duration of the plan or not, this exception will be raised
-        ## inside the solve function
+        ## For the case where the end is greater than the duration of the plan, an exception will be raised
+        ## inside the solve function, not here
         
         if isinstance(start, int) and  isinstance(end, int) and start>=1 and end>=start:
 
@@ -102,7 +108,7 @@ class Debt:
 
         """
 
-        if self.__total_to_pay > 0 and self.__monthly_fee>0:
+        if self.__total_to_pay > 0 and self.__delay_fee > 0:
             return True
         else:
             return False
