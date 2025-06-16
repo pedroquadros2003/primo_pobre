@@ -13,17 +13,32 @@ class Plan:
         Initializes a new Plan instance with default values.
         """
         self.__plan_name = plan_name
-        self.__monthly_expenses = 0
-        self.__monthly_incomes = 0
-        self.__plan_duration = 0
-        self.__single_income_list = []
-        self.__single_expense_list = []
-        self.__monthly_available_list = []
-        self.__debt_dict = { }
-        self.__solution_list = [] # List with tuples in the format (debt_name, paid_value, month)
 
-        self.__is_solved = False
-        self.__is_duration_set = False
+        self.__monthly_available_list = []   ## list of integer values. If there is a value v in the position m, it means that 
+                                             ## the person in debt has an ammount v to pay off his or her debts in the month m
+
+        self.__monthly_expenses = 0          ## integer number corresponding to the fixed ammount that is spent monthly
+                                             ## This value is deducted from all entries of monthly_available_list
+
+        self.__monthly_incomes = 0           ## integer number corresponding to the fixed ammount that is obtained monthly
+                                             ## This value is added to all entries of monthly_available_list
+        
+        self.__single_income_list = []       ## list of tuple (value, month). It corresponds to an ammount of 'value' that is added to 
+                                             ## the value in the position 'month' in the list 'monthly_available_list'
+
+        self.__single_expense_list = []      ## list of tuple (value, month). It corresponds to an ammount of 'value' that is deducted from 
+                                             ## the value in the position 'month' in the list 'monthly_available_list'
+
+        self.__plan_duration = 0             ## number of months during which debts can be payed. It is at least 1.
+                                             ## If a debt is not completely payed in this interval of time, the problem is not solvable
+
+        self.__debt_dict = { }               ## dictionary of { debt_name : debt_object (Instance of Debt)}
+
+        self.__solution_list = []            ## List with tuples in the format (debt_name, paid_value, month). Completely specifies a solution
+
+        self.__is_solved = None             ## Only true if the current plan has a completely specified solution
+
+        self.__is_duration_set = False       ## Only true if the plan_duration has already been specified
 
     def copy(self, new_plan_name):
         
@@ -96,8 +111,9 @@ class Plan:
         This method should mark the plan as solved upon successful completion.
         """
         self.__solution_list = solution_list
-        self.__is_solved = True
-
+        
+        if  self.__solution_list : 
+            self.__is_solved = True
 
     def set_plan_duration(self, duration):
 

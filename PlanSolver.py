@@ -24,7 +24,8 @@ class PlanSolver:
             if debt.get_debt_end() > plan.get_plan_duration():
                 raise WronglySpecified(" there are debts which are due to months out of the plan duration.")
                         
-        ##  plan.set_solution_list(self.__implementation.solve(plan) )
+        plan.set_solution_list(self.__implementation.solve(plan))
+
 
 
 
