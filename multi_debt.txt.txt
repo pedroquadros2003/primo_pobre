@@ -1,7 +1,7 @@
 multi_debt
 --Plan
-duration: 36
-monthly_incomes: 5000
+duration: 20
+monthly_incomes: 6000
 monthly_expenses: 0
 --Debts
 debt: mortgage, 0, 0, 1200, 0, 0

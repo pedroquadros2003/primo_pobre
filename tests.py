@@ -100,13 +100,24 @@ def test_multiple_debts():
     """Test handling of multiple debts - SHOULD PASS"""
     pp = PrimoPobre()
     pp.create_plan("multi_debt")
-    pp.set_plan_duration("multi_debt", 36)
-    pp.set_monthly_incomes("multi_debt", 5000)
+    pp.set_plan_duration("multi_debt", 20)
+    pp.set_monthly_incomes("multi_debt", 6000)
     pp.add_debt("multi_debt", "mortgage")
     pp.add_debt("multi_debt", "student_loan")
     pp.set_debt_min_per_mth("multi_debt", "mortgage", 1200)
     pp.set_debt_min_per_mth("multi_debt", "student_loan", 300)
     pp.save_plan_txt("multi_debt.txt", "multi_debt")
+
+    pp.set_delay_fee("multi_debt", "mortgage", .01)
+    pp.set_delay_fee("multi_debt", "student_loan", .01)
+
+    pp.set_monthly_fee("multi_debt", "mortgage", .05)
+    pp.set_monthly_fee("multi_debt", "student_loan", .03)
+
+    pp.set_total_to_pay("multi_debt", "mortgage", 40000)
+    pp.set_total_to_pay("multi_debt", "student_loan", 40000)
+    pp.solve_plan("multi_debt")
+    pp.print_plan_solution("multi_debt")
 
 
 

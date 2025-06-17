@@ -1,6 +1,7 @@
 from Plan import Plan
 from Debt import Debt
 from Exceptions_primo_pobre import *
+from SolversImplementation.Implementation import *
 
 class PlanSolver:
     """
@@ -9,7 +10,7 @@ class PlanSolver:
     """
 
     def __init__(self):
-        self.__implementation = 0
+        self.__implementation = Implementation()
 
     def solve(self, plan):
         
