@@ -108,6 +108,13 @@ def test_multiple_debts():
     pp.set_debt_min_per_mth("multi_debt", "student_loan", 300)
     pp.save_plan_txt("multi_debt.txt", "multi_debt")
 
+    pp.set_delay_fee("multi_debt", "mortgage", .01)
+    pp.set_delay_fee("multi_debt", "student_loan", .01)
+
+    pp.set_monthly_fee("multi_debt", "mortgage", .01)
+    pp.set_monthly_fee("multi_debt", "student_loan", .01)
+    pp.solve_plan("multi_debt")#by Iago
+
 
 
 def test_invalid_expense():

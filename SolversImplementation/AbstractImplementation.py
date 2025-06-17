@@ -20,6 +20,6 @@ class AbstractImplementation(ABC):
         debt_name = "banco"
         paid_amount = 130
         return None ## or return [ (debt_name, month, paid_ammount)]
-                    ## this should be a list of tuples which correspond to the value 'value' spent on 
+                    ## this should be a list of tuples which correspond to the value 'paid_ammount' spent on 
                     ## paying off the debt 'debt_name' on the month 'month'
                     ## Return 'None' if there is no solution possible for the current plan

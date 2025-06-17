@@ -24,6 +24,9 @@ class Debt:
 
         self.__total_to_pay = 0  ## minimum per month x (end - start + 1)
 
+        self.__type = None
+
+
     def copy(self, new_debt_name):
         
         aux = Debt(new_debt_name)
@@ -56,11 +59,14 @@ class Debt:
     
     def get_is_specified(self):
         return self.__is_specified
+
+    def get_type(self):
+        return self.__type
     
     def set_debt_duration(self, start, end):
         ## For the case where the end is greater than the duration of the plan, an exception will be raised
         ## inside the solve function, not here
-        
+       
         if isinstance(start, int) and  isinstance(end, int) and start>=1 and end>=start:
 
             self.__debt_start = start
@@ -108,7 +114,8 @@ class Debt:
 
         """
 
-        if self.__total_to_pay > 0 and self.__delay_fee > 0:
+        if self.__total_to_pay > 0 and self.__monthly_fee > 0:
+            self.__type = (self.__delay_fee > 0) ? "complex" : "simple"
             return True
         else:
             return False
