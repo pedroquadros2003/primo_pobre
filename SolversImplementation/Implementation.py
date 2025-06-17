@@ -6,6 +6,7 @@ from SolversImplementation.AbstractImplementation import AbstractImplementation
 # Adiciona o diretório pai ao Python path
 sys.path.append(str(Path(__file__).parent.parent))
 from Plan import Plan
+import heapq
 
 class Implementation(AbstractImplementation):
 
@@ -96,3 +97,97 @@ def greedy_dc( lista_monthly_fees, lista_montantes_iniciais, monthly_available_l
            temp_cost = sum(sum(b) for b in ret_val)
    return -1 if ret_val == [] else ret_val
 
+def greedy1( lista_monthly_fees, lista_montantes_iniciais, monthly_available_list):
+    time=len(monthly_available_list)
+    solution=[]
+    lista_montantes=lista_montantes_iniciais.copy()
+    for t in range(0,time):
+        money=monthly_available_list[t]
+        max_heap=[]
+        size=len(lista_montantes) #implementado com comeco no zero porque nao sou mongoloide
+        solution.append([0]*size)
+        for i in range(0,size):
+            heapq.heappush(max_heap, [-1*lista_montantes[i], -1*lista_monthly_fees[i], i])
+        while money>0 and len(max_heap)>0:
+            greed=heapq.heappop(max_heap)
+            greed[0]=-1*greed[0]
+            if money>greed[0]:
+                lista_montantes[greed[2]]=0
+                money=money-greed[0]
+                solution[t][greed[2]]=greed[0]
+            else:
+                lista_montantes[greed[2]]=greed[0]-money
+                solution[t][greed[2]]=money
+                money=0
+        for i in range(0,size):
+            lista_montantes[i]=(1+lista_monthly_fees[i])*lista_montantes[i]
+        if sum(lista_montantes)==0:
+            break
+    if sum(lista_montantes)!=0:
+        raise Exception("Plano terminou mas ainda restam dívidas. Sua casa pertence ao banco agora HAHAHAHAHAHAHA!")
+    return solution
+def greedy2( lista_monthly_fees, lista_montantes_iniciais, monthly_available_list):
+    time=len(monthly_available_list)
+    solution=[]
+    lista_montantes=lista_montantes_iniciais.copy()
+    for t in range(0,time):
+        money=monthly_available_list[t]
+        max_heap=[]
+        size=len(lista_montantes)
+        solution.append([0]*size)
+        for i in range(0,size):
+            heapq.heappush(max_heap, [-1*lista_monthly_fees[i], -1*lista_montantes[i], i])
+        while money>0 and len(max_heap)>0:
+            greed=heapq.heappop(max_heap)[2]
+            if money>lista_montantes[greed]:
+                money=money-lista_montantes[greed]
+                solution[t][greed]=lista_montantes[greed]
+                lista_montantes[greed]=0
+            else:
+                lista_montantes[greed]=lista_montantes[greed]-money
+                solution[t][greed]=money
+                money=0
+        for i in range(0,size):
+            lista_montantes[i]=(1+lista_monthly_fees[i])*lista_montantes[i]
+        if sum(lista_montantes)==0:
+            break
+    if sum(lista_montantes)!=0:
+        raise Exception("Plano terminou mas ainda restam dívidas. Sua casa pertence ao banco agora HAHAHAHAHAHAHA!")
+    return solution
+def greedy3( lista_monthly_fees, lista_montantes_iniciais, monthly_available_list):
+    time=len(monthly_available_list)
+    solution=[]
+    lista_montantes=lista_montantes_iniciais.copy()
+    for t in range(0,time):
+        money=monthly_available_list[t]
+        if(money>=sum(lista_montantes)):
+            solution.append([M for M in lista_montantes])
+            return solution
+        size=len(lista_monthly_fees)
+        finished=False
+        lista_monthly_fees_pos=lista_monthly_fees.copy()
+        temp_solution=[0]*size
+        while not finished:
+            fee_sum=0
+            for i in range(0,size):
+                if lista_monthly_fees_pos[i]!=-1:
+                    fee_sum+=(lista_monthly_fees_pos[i])
+            for i in range(0,size):
+                finished=True
+                if lista_monthly_fees_pos[i]!=-1:
+                    temp_solution[i]=money*(lista_monthly_fees_pos[i])/fee_sum
+                if lista_montantes[i]<temp_solution[i]:
+                    lista_monthly_fees_pos[i]=-1
+                    temp_solution[i]=lista_montantes[i]
+                    money=money-lista_montantes[i]
+                    finished=False
+                    break
+        solution.append(temp_solution)
+        lista_montantes=[lista_montantes[i]-temp_solution[i] for i in range(0,size)]
+        for i in range(0,size):
+            lista_montantes[i]=(1+lista_monthly_fees[i])*lista_montantes[i]
+        if sum(lista_montantes)==0:
+            break
+    if sum(lista_montantes)!=0:
+        raise Exception("Plano terminou mas ainda restam dívidas. Sua casa pertence ao banco agora HAHAHAHAHAHAHA!")
+    return solution
