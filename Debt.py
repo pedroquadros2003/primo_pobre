@@ -105,6 +105,13 @@ class Debt:
         else:
             raise InvalidValue(" delay fee must be a positive percentage between 0 and 100.")
 
+    def set_total_to_pay(self, total):
+        if  total > 0:
+            self.__total_to_pay = total
+
+        else:
+            raise InvalidValue(" total amount to pay must be positive." )
+
     def is_specified(self):
         """
         Verifies whether all required debt parameters have been set. While running, it updates the bool is_specified.
@@ -115,7 +122,7 @@ class Debt:
         """
 
         if self.__total_to_pay > 0 and self.__monthly_fee > 0:
-            self.__type = (self.__delay_fee > 0) ? "complex" : "simple"
+            self.__type = "complex" if(self.__delay_fee > 0)   else "simple"
             return True
         else:
             return False

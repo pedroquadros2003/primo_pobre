@@ -34,7 +34,7 @@ class Plan:
 
         self.__debt_dict = { }               ## dictionary of { debt_name : debt_object (Instance of Debt)}
 
-        self.__solution_list = []            ## List with tuples in the format (debt_name, paid_value, month). Completely specifies a solution
+        self.__solution_list = []            ## List with dictionaries in the format {"debt_name" : value_paid}. Completely specifies a solution
 
         self.__is_solved = None             ## Only true if the current plan has a completely specified solution
 
@@ -114,6 +114,12 @@ class Plan:
         
         if  self.__solution_list : 
             self.__is_solved = True
+
+    def print_solution_list(self):
+        if(self.__is_solved):
+            for entry in self.__solution_list:
+                print(entry)
+                print("\n")
 
     def set_plan_duration(self, duration):
 
