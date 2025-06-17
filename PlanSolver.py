@@ -10,7 +10,7 @@ class PlanSolver:
     """
 
     def __init__(self):
-        self.__implementation = Implementation()
+        self.__implementation = Implementation_greedy_dc()
 
     def solve(self, plan):
         
