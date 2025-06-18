@@ -92,9 +92,3 @@ class PlanLoader:
             raise FileNotFoundError(f"Plan file {file_name}.txt not found")
         except Exception as e:
             raise ValueError(f"Error loading plan: {str(e)}")
-
-    def add_debt(self, plan_name, debt_name):
-        if not plan_name in self.__plan_dict.keys():
-            raise NonexistentObject(" the plan to which you are trying to add a debt does not exist.")
-        debt = Debt(debt_name)
-        self.__plan_dict[plan_name].add_debt_object(debt)
