@@ -76,8 +76,8 @@ class PlanLoader:
                             start_month = int(parts[1].strip())
                             end_month = int(parts[2].strip())
                             min_per_month = int(parts[3].strip())
-                            monthly_fee = int(parts[4].strip())
-                            delay_fee = int(parts[5].strip())
+                            monthly_fee = float(parts[4].strip())
+                            delay_fee = float(parts[5].strip())
                             
                             plan.add_debt(debt_name)
                             debt = plan.get_debt(debt_name)
@@ -92,3 +92,9 @@ class PlanLoader:
             raise FileNotFoundError(f"Plan file {file_name}.txt not found")
         except Exception as e:
             raise ValueError(f"Error loading plan: {str(e)}")
+
+    def add_debt(self, plan_name, debt_name):
+        if not plan_name in self.__plan_dict.keys():
+            raise NonexistentObject(" the plan to which you are trying to add a debt does not exist.")
+        debt = Debt(debt_name)
+        self.__plan_dict[plan_name].add_debt_object(debt)

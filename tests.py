@@ -111,8 +111,8 @@ def test_multiple_debts():
     pp.set_delay_fee("multi_debt", "mortgage", .01)
     pp.set_delay_fee("multi_debt", "student_loan", .01)
 
-    pp.set_monthly_fee("multi_debt", "mortgage", .05)
-    pp.set_monthly_fee("multi_debt", "student_loan", .03)
+    pp.set_monthly_fee("multi_debt", "mortgage", .01)
+    pp.set_monthly_fee("multi_debt", "student_loan", .01)
 
     pp.set_total_to_pay("multi_debt", "mortgage", 40000)
     pp.set_total_to_pay("multi_debt", "student_loan", 40000)

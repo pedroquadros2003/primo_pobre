@@ -161,10 +161,18 @@ class PrimoPobre:
         self.__plan_solver.solve(self.__plan_dict[plan_name])
 
     def print_plan_solution(self, plan_name):
+        """
+        Prints a detailed solution of the plan using the PlanSolver's print_solution method.
+
+        Args:
+            plan_name: Name of the plan to print solution for.
+
+        Raises:
+            NonexistentObject: If the plan doesn't exist.
+        """
         if not plan_name in self.__plan_dict.keys():
             raise NonexistentObject(" the plan you are trying to solve does not exist.")
-        self.__plan_dict[plan_name].print_solution_list()
-
+        self.__plan_solver.print_solution(self.__plan_dict[plan_name])
 
     def set_plan_duration(self, plan_name, duration):
         """
